@@ -1,5 +1,6 @@
 import numpy as np
 import cv2 as cv
+import handy as H
 
 # CASCADE CLASSIFIERS
 face_cascade = cv.CascadeClassifier('/usr/local/opt/opencv@3/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml')
@@ -51,3 +52,18 @@ def detectInImage(img):
     for face in faces:
         imgFace = crop(img, face)
         drawBoxes(imgFace, BLUE, detectEyes(imgFace))
+
+
+# TODO: move init somewhere else
+hist = H.captureHistogram(0)
+
+def detectFingerTips(img):
+    ret, frame, contours, defects = H.detectHand(
+        img,
+        hist, # TODO: remove dangerous global
+        sketchContours = True,
+        computeDefects = True
+    )
+    fingerTips = H.extractFingertips(defects, contours, 50, right = True)
+    H.plot(frame, fingerTips)
+    return frame

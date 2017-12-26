@@ -4,13 +4,13 @@ import cv2 as cv
 sys.path.append('../lib/')
 import helpers
 
-DEBUG = 1
-
+DEBUG = True
 if DEBUG:
     print("Face Recognition")
     print(helpers.infoBanner())
 
 cap = cv.VideoCapture(0)
+
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()

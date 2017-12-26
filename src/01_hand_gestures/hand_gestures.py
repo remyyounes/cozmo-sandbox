@@ -4,19 +4,19 @@ import cv2 as cv
 sys.path.append('../lib/')
 import helpers
 
-DEBUG = 1
-
+DEBUG = True
 if DEBUG:
-    print("Gesture Detection")
+    print("Hand Gestures Recognition")
     print(helpers.infoBanner())
 
 cap = cv.VideoCapture(0)
+
 while(True):
     # Capture frame-by-frame
-    ret, frame = cap.read()
+    ret, img = cap.read()
 
     # Our operations on the frame come here
-    helpers.detectInImage(frame)
+    frame = helpers.detectFingerTips(img)
 
     # Display the resulting frame
     cv.imshow('frame',frame)
