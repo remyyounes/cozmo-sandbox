@@ -40,7 +40,6 @@ def detectEyes(img):
 # TODO: Add relevant msgs
 def infoBanner():
     messages = [
-        "Gesture Detection",
         "OpenCV Version " +  cv.__version__
     ]
     return "\n".join(messages)

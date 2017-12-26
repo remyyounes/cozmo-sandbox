@@ -6,9 +6,10 @@ import helpers
 
 DEBUG = 1
 
-if DEBUG: print(helpers.infoBanner())
+if DEBUG:
+    print("Gesture Detection")
+    print(helpers.infoBanner())
 
-#
 cap = cv.VideoCapture(0)
 while(True):
     # Capture frame-by-frame
@@ -19,26 +20,11 @@ while(True):
 
     # Display the resulting frame
     cv.imshow('frame',frame)
+
+    # Exit on 'q' pressed
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
+
 # When everything done, release the capture
 cap.release()
 cv.destroyAllWindows()
-#
-#
-
-# ====================================
-# ====================================
-# ====================================
-
-
-
-
-
-
-# faceImg = cv.imread('face_detection.jpg')
-# helpers.detectInImage(faceImg)
-#
-# cv.imshow('img',faceImg)
-# cv.waitKey(0)
-# cv.destroyAllWindows()
