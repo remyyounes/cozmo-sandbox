@@ -7,10 +7,10 @@ face_cascade = cv.CascadeClassifier('/usr/local/opt/opencv@3/share/OpenCV/haarca
 eye_cascade = cv.CascadeClassifier('/usr/local/opt/opencv@3/share/OpenCV/haarcascades/haarcascade_eye.xml')
 
 # COLORS
-RED = (255, 0, 0)
+BLUE = (255, 0, 0)
 GREEN = (0, 255, 0)
-BLUE = (0,0,255)
-PURPLE = (255,0,255)
+RED = (0, 0, 255)
+PURPLE = (255, 0, 255)
 
 # DRAWING UTILS
 def drawBox(img, box, color):
@@ -54,13 +54,10 @@ def detectInImage(img):
         drawBoxes(imgFace, BLUE, detectEyes(imgFace))
 
 
-# TODO: move init somewhere else
-hist = H.captureHistogram(0)
-
-def detectFingerTips(img):
+def detectFingerTips(img, hist):
     ret, frame, contours, defects = H.detectHand(
         img,
-        hist, # TODO: remove dangerous global
+        hist,
         sketchContours = True,
         computeDefects = True
     )

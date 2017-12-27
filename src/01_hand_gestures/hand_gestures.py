@@ -1,22 +1,30 @@
 import sys
+sys.path.append('../lib/')
 import numpy as np
 import cv2 as cv
-sys.path.append('../lib/')
+import handy as H
 import helpers
 
 DEBUG = True
-if DEBUG:
-    print("Hand Gestures Recognition")
-    print(helpers.infoBanner())
 
 cap = cv.VideoCapture(0)
 
+scene_width = cap.get(cv.CAP_PROP_FRAME_WIDTH)
+scene_height = cap.get(cv.CAP_PROP_FRAME_HEIGHT)
+
+if DEBUG:
+    print("Hand Gestures Recognition")
+    print(helpers.infoBanner())
+    print('scene_width', scene_width)
+    print('scene_height', scene_height)
+
+hist = H.captureHistogram(0)
 while(True):
     # Capture frame-by-frame
     ret, img = cap.read()
 
     # Our operations on the frame come here
-    frame = helpers.detectFingerTips(img)
+    frame = helpers.detectFingerTips(img, hist)
 
     # Display the resulting frame
     cv.imshow('frame',frame)

@@ -1,21 +1,11 @@
 import cv2
 import numpy as np
 import math
+import helpers
 
 #todo
 #add support for multiple hands
 #add classifier
-
-def adaptObjectHistogram(frame):
-    boxOne = frame[105:125,505:525]
-    boxTwo = frame[ 105:125,555:575]
-    boxThree = frame[155:175, 505:525]
-    boxFour = frame[155:175,555:575]
-    adaptObjectColor = np.hstack((boxOne, boxTwo, boxThree, boxFour))
-    hsvObjectColor = cv2.cvtColor(adaptObjectColor, cv2.COLOR_BGR2HSV)
-    objectHist = cv2.calcHist([hsvObjectColor], [0,1], None, [12,15], [0,180,0,256])
-    cv2.normalize(objectHist, objectHist, 0,255,cv2.NORM_MINMAX)
-    return objectHist
 
 def extractFingertips(defects, cnt, filterValue, left = None, right = None):
     left = False if left is None else left
@@ -59,18 +49,27 @@ def captureHistogram(source = None):
     if source is not None and str(type(source)) != "<class 'int'>":
         raise ValueError("source: integer value expected")
     cap = cv2.VideoCapture(source)
+
+    boxSize = 30
+    centerX = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) / 2)
+    centerY = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) / 2)
     while True:
         _, frame = cap.read()
         frame = cv2.flip(frame, 1)
         cv2.putText(frame, "Place region of the hand inside the boxes and press `A`", (5,50), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 1, cv2.LINE_AA)
-        cv2.rectangle(frame, (500,100), (530,130), (105,105,105), 2)
-        cv2.rectangle(frame, (550, 100), (580, 130), (105,105,105), 2)
-        cv2.rectangle(frame, (500, 150), (530, 180), (105,105,105), 2)
-        cv2.rectangle(frame, (550, 150), (580, 180), (105,105,105), 2)
-        boxOne = frame[105:125,505:525]
-        boxTwo = frame[ 105:125,555:575]
-        boxThree = frame[155:175, 505:525]
-        boxFour = frame[155:175,555:575]
+
+        box1 = (centerX + 0,     centerY + 0,   boxSize, boxSize)
+        box2 = (centerX + 50,    centerY + 0,   boxSize, boxSize)
+        box3 = (centerX + 0,     centerY + 50,  boxSize, boxSize)
+        box4 = (centerX + 50,    centerY + 50,  boxSize, boxSize)
+
+        helpers.drawBoxes(frame, helpers.PURPLE, [box1, box2, box3, box4])
+
+        boxOne = helpers.crop(frame, box1)
+        boxTwo = helpers.crop(frame, box2)
+        boxThree = helpers.crop(frame, box3)
+        boxFour = helpers.crop(frame, box4)
+
         finalHistImage = np.hstack((boxOne, boxTwo, boxThree, boxFour))
         cv2.imshow("Video Feed", frame)
         key = cv2.waitKey(10)
