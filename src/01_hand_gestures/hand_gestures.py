@@ -18,7 +18,7 @@ if DEBUG:
     print('scene_width', scene_width)
     print('scene_height', scene_height)
 
-hist = H.captureHistogram(0)
+hist = helpers.captureHistogram()
 while(True):
     # Capture frame-by-frame
     ret, img = cap.read()
